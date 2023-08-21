@@ -20,13 +20,13 @@
                     <h1>SoundScape</h1>
                 </div>
                 <div class="col">
-                    <a href="music.php" class = "aa">Музыка</a>
+                    <a href="music.php" class="aa">Музыка</a>
                 </div>
                 <div class="col">
-                    <a href="posts.php" class = "aa">Посты</a>
+                    <a href="posts.php" class="aa">Посты</a>
                 </div>
                 <div class="col">
-                    <a href="main.php" class = "aa">О проекте</a>
+                    <a href="main.php" class="aa">О проекте</a>
                 </div>
             </div>
         </div>
@@ -34,7 +34,7 @@
             <span>
                 <h1>SoundScape</h1>
                 <h3>Your Life. Your Sounds</h3>
-                <a href="addposts.php" class = "aa1">Добавить свой пост +</a>
+                <a href="addposts.php" class="aa1">Добавить свой пост +</a>
             </span>
         </div>
         <?php
@@ -48,14 +48,12 @@
 
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-
             $title = $_POST['title'];
             $content = $_POST['content'];
+            $category_id = $_POST['category_id'];
 
-            if (!empty($title) && !empty($content)) {
-
-                $query = "INSERT INTO posts (name, text) VALUES ('$title', '$content')";
-
+            if (!empty($title) && !empty($content) && !empty($category_id)) {
+                $query = "INSERT INTO posts (name, text, category_id) VALUES ('$title', '$content', $category_id)";
                 $result = mysqli_query($link, $query);
 
                 if ($result) {
@@ -78,7 +76,15 @@
                 <label for="post-content">Текст поста:</label>
                 <textarea id="content" name="content" required></textarea>
                 <br>
-                <input type="submit" value="Опубликовать">
+                <label for="category_id" class="cat">Выберите категорию:</label>
+                <select name="category_id" id="category_id">
+                    <option value="1">Артисты</option>
+                    <option value="2">Музыка</option>
+                    <option value="3">Новости</option>
+                    <option value="4">Другое</option>
+
+                </select>
+                <br> <input type="submit" value="Опубликовать">
             </form>
         </div>
         <br>
@@ -100,6 +106,12 @@
             </p>
         </div>
     </div>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+        integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.min.js"
+        integrity="sha384-Rx+T1VzGupg4BHQYs2gCW9It+akI2MM/mndMCy36UVfodzcJcF0GGLxZIzObiEfa"
+        crossorigin="anonymous"></script>
 </body>
 
 </html>

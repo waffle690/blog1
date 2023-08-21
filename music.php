@@ -1,19 +1,3 @@
-<?php
-error_reporting(E_ALL);
-ini_set("display_errors", "on");
-
-$host = "localhost";
-$user = "root";
-$pass = "";
-$db = "blog";
-session_start();
-
-$link = mysqli_connect($host, $user, $pass, $db);
-
-$query = "SELECT * FROM users";
-$result = mysqli_query($link, $query);
-?>
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -22,10 +6,9 @@ $result = mysqli_query($link, $query);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Document</title>
-    <link rel="stylesheet" href="assets/css/bootstrap.css">
+    <link rel="stylesheet" href="music.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
-            <link rel="stylesheet" href="music.css">
 </head>
 
 <body>
@@ -107,13 +90,7 @@ $result = mysqli_query($link, $query);
                 дома (достаточно хорошего микрофона и специального софта). Пусть вашу работу оценят потенциальные
                 поклонники и другие артисты. А может, талант ваш приглянётся даже музыкальным продюсерам.</p>
             <h4>Слушать топ 3 хитов лучших жанров</h4>
-            <?php
-            $selectedGenre = "";
 
-            if ($_SERVER["REQUEST_METHOD"] == "POST") {
-                $selectedGenre = $_POST["genre"];
-            }
-            ?>
             <form action="music.php" method="post">
                 <label for="genre">Выберите жанр:</label>
                 <select name="genre" id="genre">
@@ -121,28 +98,48 @@ $result = mysqli_query($link, $query);
                     <option value="Поп музыка">Поп музыка</option>
                     <option value="Хип-Хоп музыка">Хип-Хоп музыка</option>
                 </select>
-                <input type="submit" value="Выбрать">
+                <input type="submit" value="Выбрать" class="btn btn-dark">
             </form>
+            <?php
+
+            error_reporting(E_ALL);
+            ini_set("display_errors", "on");
+
+            $host = "localhost";
+            $user = "root";
+            $pass = "";
+            $db = "blog";
+
+            $link = mysqli_connect($host, $user, $pass, $db);
+
+            $query = "SELECT * FROM users";
+            $result = mysqli_query($link, $query);
+
+            $selectedGenre = "";
+
+            if ($_SERVER["REQUEST_METHOD"] == "POST") {
+                $selectedGenre = $_POST["genre"];
+            }
+            ?>
             <?php
             if (!empty($selectedGenre)) {
                 echo "<p>Вы выбрали: " . $selectedGenre . "</p>";
 
                 if ($selectedGenre == "Рок музыка") {
-                    echo '<p>Песня 1</p><audio controls><source src="musix/rok1.mp3" type="audio/mpeg"></audio><br><br>';
-                    echo '<p>Песня 1</p><audio controls><source src="musix/rok2.mp3" type="audio/mpeg"></audio><br><br>';
-                    echo '<p>Песня 1</p><audio controls><source src="musix/rok3.mp3" type="audio/mpeg"></audio><br><br>';
+                    echo '<p>ДДТ - Стая </p><audio controls><source src="musix/rok1.mp3" type="audio/mpeg"></audio><br><br>';
+                    echo '<p>Ленинград - Русский</p><audio controls><source src="musix/rok2.mp3" type="audio/mpeg"></audio><br><br>';
+                    echo '<p>Король и Шут - Кукла колдуна</p><audio controls><source src="musix/rok3.mp3" type="audio/mpeg"></audio><br><br>';
                 } elseif ($selectedGenre == "Поп музыка") {
-                    echo '<p>Песня 1</p><audio controls><source src="musix/pop1.mp3" type="audio/mpeg"></audio><br><br>';
-                    echo '<p>Песня 1</p><audio controls><source src="musix/pop2.mp3" type="audio/mpeg"></audio><br><br>';
-                    echo '<p>Песня 1</p><audio controls><source src="musix/pop3.mp3" type="audio/mpeg"></audio><br><br>';
+                    echo '<p>Tones and I - Dance Monkey/p><audio controls><source src="musix/pop1.mp3" type="audio/mpeg"></audio><br><br>';
+                    echo '<p>RASA - ПОГУДИМ</p><audio controls><source src="musix/pop2.mp3" type="audio/mpeg"></audio><br><br>';
+                    echo '<p>Zivert - Ещё Хочу</p><audio controls><source src="musix/pop3.mp3" type="audio/mpeg"></audio><br><br>';
                 } elseif ($selectedGenre == "Хип-Хоп музыка") {
-                    echo '<p>Песня 1</p><audio controls><source src="musix/xipxop1.mp3" type="audio/mpeg"></audio><br><br>';
-                    echo '<p>Песня 1</p><audio controls><source src="musix/xipxop2.mp3" type="audio/mpeg"></audio><br><br>';
-                    echo '<p>Песня 1</p><audio controls><source src="musix/xipxop3.mp3" type="audio/mpeg"></audio><br><br>';
+                    echo '<p>Akon, Eminem - Smack That (Dirty)</p><audio controls><source src="musix/xipxop1.mp3" type="audio/mpeg"></audio><br><br>';
+                    echo '<p>Eminem - Without Me (Album Version (Explicit))</p><audio controls><source src="musix/xipxop2.mp3" type="audio/mpeg"></audio><br><br>';
+                    echo '<p>Eminem - Mockingbird (Album Version (Explicit))</p><audio controls><source src="musix/xipxop3.mp3" type="audio/mpeg"></audio><br><br>';
                 }
             }
             ?>
-
             <br>
             <br>
         </div>

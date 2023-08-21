@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="en">
 
 <head>
@@ -13,36 +14,24 @@
 </head>
 
 <body>
-
   <div class="body">
     <div class="container custom-padding">
       <div class="row justify-content-center">
         <div class="col">
           <h1>SoundScape</h1>
         </div>
-        <div class="col">
-          <a href="music.php" class="aa">Музыка</a>
-        </div>
-        <div class="col">
-          <a href="posts.php" class="aa">Посты</a>
-        </div>
-        <div class="col">
-          <a href="main.php" class="aa">О проекте</a>
-        </div>
+        <div class="col"> <a href="music.php" class="aa">Музыка</a> </div>
+        <div class="col"> <a href="posts.php" class="aa">Посты</a> </div>
+        <div class="col"> <a href="main.php" class="aa">О проекте</a> </div>
       </div>
     </div>
-    <div class="logo">
-      <span>
+    <div class="logo"> <span>
         <h1>SoundScape</h1>
-        <h3>Your Life. Your Sounds</h3>
-        <a href="addposts.php" class="aa1">Добавить свой пост +</a>
-      </span>
-    </div>
+        <h3>Your Life. Your Sounds</h3> <a href="addposts.php" class="aa1">Добавить свой пост +</a>
+      </span> </div>
     <div class="oproekte">
-      <?php
-      error_reporting(E_ALL);
+      <?php error_reporting(E_ALL);
       ini_set('display_errors', '1');
-
       $host = 'localhost';
       $user = 'root';
       $pass = '';
@@ -79,56 +68,88 @@
               echo htmlspecialchars($row["text"]);
               ?>
             </p>
-            <button id="myButton" type="submit" name="likeButton">Лайк</button>
-            <button id="myButton1" type="submit" name="dislikeButton">Дизлайк</button>
-          </div>
-        </div>
-        <h6 class="card-subtitle mb-2 text-muted">Комментарии:</h6>
-        <?php
-        $comments_query = "SELECT * FROM comments WHERE post_id = $post_id ORDER BY timestamp";
-        $comments_result = $conn->query($comments_query);
+            <style>
+              button {
+                background-color: red;
+                color: white;
+                padding: 5px 10px;
+                border: none;
+                border-radius: 5px;
+                font-size: 16px;
+              }
 
-        if ($comments_result->num_rows > 0) {
-          while ($comment_row = $comments_result->fetch_assoc()) {
-            ?>
-            <div style="border: 1px solid #ccc; padding: 10px; margin-bottom: 10px;">
-              <?php echo htmlspecialchars($comment_row["text"]); ?>
-            </div>
-            <?php
+              button.green {
+                background-color: green;
+              }
+            </style>
+            <button onclick="changeColor()">Лайкнуть</button>
+
+            <script>
+              let isLiked = false; // добавим флаг
+
+              function changeColor() {
+                let button = document.querySelector('button');
+                if (isLiked) { // если кнопка уже лайкнута, то возвращаем ее в начальное состояние
+                  button.classList.remove('green');
+                  button.textContent = 'Лайк';
+                  isLiked = false;
+                }
+                else { // если кнопка не лайкнута, то лайкаем ее
+                  button.classList.add('green');
+                  button.textContent = 'Лайкнуто';
+                  isLiked = true;
+                }
+              }
+            </script>
+
+          </div>
+          <h6 class="card-subtitle mb-2 text-muted">Комментарии:</h6>
+
+          <?php
+          $comments_query = "SELECT * FROM comments WHERE post_id = $post_id ORDER BY timestamp";
+          $comments_result = $conn->query($comments_query);
+
+          if ($comments_result->num_rows > 0) {
+            while ($comment_row = $comments_result->fetch_assoc()) {
+              ?>
+              <div style="border: 1px solid #ccc; padding: 10px; margin-bottom: 10px;">
+                <?php echo htmlspecialchars($comment_row["text"]); ?>
+              </div>
+              <?php
+            }
+          } else {
+            echo "Нет комментариев";
           }
-        } else {
-          echo "Нет комментариев";
-        }
-        ?>
+          ?>
 
-        <form method="post" action="">
-          <input type="hidden" name="post_id" value="<?php echo $post_id; ?>">
-          <div class=" form-group">
-            <label for="comment_<?php echo $post_id; ?>">Добавить комментарий:</label>
-            <input class=" form-control" id="comment_<?php echo $post_id; ?>" name=" comment_text" rows="3"></input>
-          </div>
-          <button type="submit" class="btn btn-dark">Отправить комментарий</button>
-        </form>
+          <form method="post" action="">
+            <input type="hidden" name="post_id" value="<?php echo $post_id; ?>">
+            <div class="form-group">
+              <label for="comment_<?php echo $post_id; ?>">Добавить комментарий:</label>
+              <textarea class="form-control" id="comment_<?php echo $post_id; ?>" name="comment_text" rows="3"></textarea>
+            </div>
+            <br> <button type="submit" class="btn btn-dark">Отправить комментарий</button>
+          </form>
 
-        <?php
+          <?php
       } else {
         echo "Пост не найден";
       }
 
       $conn->close();
       ?>
+      </div>
+    </div> <br>
+    <div class="footer">
+      <p>&copy;
+        <?php $current_year = date('Y');
+        echo $current_year; ?> М. Пивненко
+      </p>
     </div>
   </div>
-  <br>
-  <div class="footer">
-    <p>©
-      <?php
-      $current_year = date('Y');
-      echo $current_year;
-      ?> М. Пивненко
-    </p>
-  </div>
-  </div>
 </body>
+<script src="https://unpkg.com/react@17/umd/react.production.min.js" crossorigin></script>
+<script src="https://unpkg.com/react-dom@17/umd/react-dom.production.min.js" crossorigin></script>
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 
 </html>

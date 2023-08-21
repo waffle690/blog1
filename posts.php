@@ -40,10 +40,29 @@
     <div class="oproekte">
       <h3 id="info">Посты</h3>
       <div class="sort-options">
-        <a href="?sort=asc" class="sort-option" class="aa3">Сортировать по времени &uarr;</a>
-        <span>|</span>
-        <a href="?sort=desc" class="sort-option" class="aa3">Сортировать по времени &darr;</a>
+        <form method="GET">
+          <label for="category_id">Категория:</label>
+          <select name="category_id" id="category_id" onchange="this.form.submit()">
+            <?php
+            $categories = [
+              ['id' => 1, 'name' => 'Артисты'],
+              ['id' => 2, 'name' => 'Музыка'],
+              ['id' => 3, 'name' => 'Новости'],
+              ['id' => 4, 'name' => 'Другое']
+            ];
+
+            foreach ($categories as $category) {
+              echo "<option value='" . $category['id'] . "'>" . $category['name'] . "</option>";
+            }
+            ?>
+          </select>
+
+          <a href=" ?sort=asc" class="sort-option" class="aa3">Сортировать по времени &uarr;</a>
+          <span>|</span>
+          <a href="?sort=desc" class="sort-option" class="aa4">Сортировать по времени &uarr;</a>
+        </form>
       </div>
+      <br>
       <?php
       error_reporting(E_ALL);
       ini_set('display_errors', 'on');
@@ -54,13 +73,16 @@
       $db = 'blog';
 
       $conn = new mysqli($host, $user, $pass, $db);
-      if ($conn->connect_error) {
-        die("Ошибка подключения к базе данных: " . $conn->connect_error);
-      }
 
+      $category_filter = isset($_GET['category_id']) && is_numeric($_GET['category_id']) ? intval($_GET['category_id']) : null;
       $order_by = isset($_GET['sort']) && strtolower($_GET['sort']) == 'desc' ? 'DESC' : 'ASC';
-      $query = "SELECT * FROM posts ORDER BY timestamp $order_by";
-      $result = $conn->query($query);
+
+      $posts_query = "SELECT * FROM posts";
+      if ($category_filter !== null) {
+        $posts_query .= " WHERE category_id = $category_filter";
+      }
+      $posts_query .= " ORDER BY timestamp $order_by";
+      $result = $conn->query($posts_query);
 
       if ($result->num_rows > 0) {
         while ($row = $result->fetch_assoc()) {
