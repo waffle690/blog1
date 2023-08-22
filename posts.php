@@ -44,6 +44,7 @@
           <label for="category_id">Категория:</label>
           <select name="category_id" id="category_id" onchange="this.form.submit()">
             <?php
+            session_start();
             $categories = [
               ['id' => 1, 'name' => 'Артисты'],
               ['id' => 2, 'name' => 'Музыка'],
@@ -51,15 +52,21 @@
               ['id' => 4, 'name' => 'Другое']
             ];
 
+            $selected_category_id = $categories[0]['id'];
+
+            if (isset($_GET['category_id'])) {
+              $selected_category_id = $_GET['category_id'];
+            }
+
             foreach ($categories as $category) {
-              echo "<option value='" . $category['id'] . "'>" . $category['name'] . "</option>";
+              $selected = ($category['id'] == $selected_category_id) ? 'selected' : '';
+              echo "<option value='" . $category['id'] . "' " . $selected . ">" . $category['name'] . "</option>";
             }
             ?>
           </select>
-
           <a href=" ?sort=asc" class="sort-option" class="aa3">Сортировать по времени &uarr;</a>
           <span>|</span>
-          <a href="?sort=desc" class="sort-option" class="aa4">Сортировать по времени &uarr;</a>
+          <a href="?sort=desc" class="sort-option" class="aa4">Сортировать по времени &darr;</a>
         </form>
       </div>
       <br>

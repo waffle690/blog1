@@ -90,18 +90,18 @@
                 дома (достаточно хорошего микрофона и специального софта). Пусть вашу работу оценят потенциальные
                 поклонники и другие артисты. А может, талант ваш приглянётся даже музыкальным продюсерам.</p>
             <h4>Слушать топ 3 хитов лучших жанров</h4>
-
             <form action="music.php" method="post">
                 <label for="genre">Выберите жанр:</label>
                 <select name="genre" id="genre">
-                    <option value="Рок музыка">Рок музыка</option>
-                    <option value="Поп музыка">Поп музыка</option>
-                    <option value="Хип-Хоп музыка">Хип-Хоп музыка</option>
+                    <option value="Рок музыка" <?= $selectedGenre == "Рок музыка" ? 'selected' : '' ?>>Рок музыка</option>
+                    <option value="Поп музыка" <?= $selectedGenre == "Поп музыка" ? 'selected' : '' ?>>Поп музыка</option>
+                    <option value="Хип-Хоп музыка" <?= $selectedGenre == "Хип-Хоп музыка" ? 'selected' : '' ?>>Хип-Хоп
+                        музыка</option>
                 </select>
                 <input type="submit" value="Выбрать" class="btn btn-dark">
             </form>
-            <?php
 
+            <?php
             error_reporting(E_ALL);
             ini_set("display_errors", "on");
 
@@ -130,7 +130,7 @@
                     echo '<p>Ленинград - Русский</p><audio controls><source src="musix/rok2.mp3" type="audio/mpeg"></audio><br><br>';
                     echo '<p>Король и Шут - Кукла колдуна</p><audio controls><source src="musix/rok3.mp3" type="audio/mpeg"></audio><br><br>';
                 } elseif ($selectedGenre == "Поп музыка") {
-                    echo '<p>Tones and I - Dance Monkey/p><audio controls><source src="musix/pop1.mp3" type="audio/mpeg"></audio><br><br>';
+                    echo '<p>Tones and I - Dance Monkey</p><audio controls><source src="musix/pop1.mp3" type="audio/mpeg"></audio><br><br>';
                     echo '<p>RASA - ПОГУДИМ</p><audio controls><source src="musix/pop2.mp3" type="audio/mpeg"></audio><br><br>';
                     echo '<p>Zivert - Ещё Хочу</p><audio controls><source src="musix/pop3.mp3" type="audio/mpeg"></audio><br><br>';
                 } elseif ($selectedGenre == "Хип-Хоп музыка") {

@@ -1,35 +1,3 @@
-<?php
-error_reporting(E_ALL);
-ini_set('display_errors', 'on');
-
-$host = 'localhost';
-$user = 'root';
-$pass = '';
-$db = 'blog';
-session_start();
-
-$link = mysqli_connect($host, $user, $pass, $db);
-if (!empty($_POST['login']) && !empty($_POST['password'])) {
-  $login = $_POST['login'];
-  $password = $_POST['password'];
-
-  $query = "SELECT * FROM user WHERE login='$login'";
-  $result = mysqli_query($link, $query) or die(mysqli_error($link));
-
-  if (mysqli_num_rows($result) == 1) {
-    $row = mysqli_fetch_assoc($result);
-    $salt = $row['salt'];
-    if (password_verify($salt . $password, $row['password'])) {
-      $_SESSION['id'] = $row['id'];
-      header('Location: main.php');
-    } else {
-      echo '<p><span style="color: red"> Неверное имя пользователя или пароль.</span></p>';
-    }
-  } else {
-    echo '<p><span style="color: red"> Логин или пароль несоответствует требованиям.</span></p>';
-  }
-}
-?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -59,6 +27,38 @@ if (!empty($_POST['login']) && !empty($_POST['password'])) {
       <label for="password">Пароль</label>
       <input type="password" id="password" name="password" required><br>
 
+      <?php
+      error_reporting(E_ALL);
+      ini_set('display_errors', 'on');
+
+      $host = 'localhost';
+      $user = 'root';
+      $pass = '';
+      $db = 'blog';
+      session_start();
+
+      $link = mysqli_connect($host, $user, $pass, $db);
+      if (!empty($_POST['login']) && !empty($_POST['password'])) {
+        $login = $_POST['login'];
+        $password = $_POST['password'];
+
+        $query = "SELECT * FROM user WHERE login='$login'";
+        $result = mysqli_query($link, $query) or die(mysqli_error($link));
+
+        if (mysqli_num_rows($result) == 1) {
+          $row = mysqli_fetch_assoc($result);
+          $salt = $row['salt'];
+          if (password_verify($salt . $password, $row['password'])) {
+            $_SESSION['id'] = $row['id'];
+            header('Location: main.php');
+          } else {
+            echo '<p><span style="color: red"> Неверное имя пользователя или пароль.</span></p>';
+          }
+        } else {
+          echo '<p><span style="color: red"> Неверное имя пользователя или пароль.</span></p>';
+        }
+      }
+      ?>
       <input type="submit" value="Войти">
     </form>
 

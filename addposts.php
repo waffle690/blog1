@@ -38,7 +38,7 @@
             </span>
         </div>
         <?php
-        // Устанавливаем соединение с базой данных
+        session_start();
         $host = 'localhost';
         $user = 'root';
         $password = '';

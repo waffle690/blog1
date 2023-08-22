@@ -30,7 +30,9 @@
         <h3>Your Life. Your Sounds</h3> <a href="addposts.php" class="aa1">Добавить свой пост +</a>
       </span> </div>
     <div class="oproekte">
-      <?php error_reporting(E_ALL);
+      <?php
+      session_start();
+      error_reporting(E_ALL);
       ini_set('display_errors', '1');
       $host = 'localhost';
       $user = 'root';
@@ -85,16 +87,15 @@
             <button onclick="changeColor()">Лайкнуть</button>
 
             <script>
-              let isLiked = false; // добавим флаг
-
+              let isLiked = false;
               function changeColor() {
                 let button = document.querySelector('button');
-                if (isLiked) { // если кнопка уже лайкнута, то возвращаем ее в начальное состояние
+                if (isLiked) {
                   button.classList.remove('green');
                   button.textContent = 'Лайк';
                   isLiked = false;
                 }
-                else { // если кнопка не лайкнута, то лайкаем ее
+                else {
                   button.classList.add('green');
                   button.textContent = 'Лайкнуто';
                   isLiked = true;

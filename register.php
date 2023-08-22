@@ -1,52 +1,3 @@
-<?php
-error_reporting(E_ALL);
-ini_set('display_errors', 'on');
-
-$host = 'localhost';
-$user = 'root';
-$pass = '';
-$db = 'blog';
-session_start();
-
-$link = mysqli_connect($host, $user, $pass, $db);
-
-function generateSalt()
-{
-  $salt = '';
-  $saltLength = 8;
-
-  for ($i = 0; $i < $saltLength; $i++) {
-    $salt .= chr(mt_rand(33, 126));
-  }
-
-  return $salt;
-}
-
-if (!empty($_POST['login']) && !empty($_POST['password']) && !empty($_POST['confirm'])) {
-  if ($_POST['password'] == $_POST['confirm']) {
-    if (mb_strlen($_POST['login']) >= 4 && mb_strlen($_POST['login']) < 10 && mb_strlen($_POST['password']) >= 8 && mb_strlen($_POST['password']) <= 16) {
-
-      $login = $_POST['login'];
-      $salt = generateSalt();
-      $password = password_hash($salt . $_POST['password'], PASSWORD_DEFAULT);
-      $query = "SELECT * FROM user WHERE login='$login'";
-      $result = mysqli_query($link, $query);
-
-      if (mysqli_num_rows($result) == 0) {
-        $query = "INSERT INTO user SET login='$login', password='$password', salt='$salt'";
-        mysqli_query($link, $query) or die(mysqli_error($link));
-        $id = mysqli_insert_id($link);
-        $_SESSION['id'] = $id;
-        header('Location: entrance.php');
-      } else {
-        echo '<p><span style="color: red"> Этот логин уже используется, выберите другой.</span></p>';
-      }
-    } else {
-      echo '<p><span style="color: red"> Логин или пароль несоответствует требованиям.</span></p>';
-    }
-  }
-}
-?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -83,7 +34,55 @@ if (!empty($_POST['login']) && !empty($_POST['password']) && !empty($_POST['conf
 
       <input type="submit" value="Зарегистрироваться">
 
+      <?php
+      error_reporting(E_ALL);
+      ini_set('display_errors', 'on');
 
+      $host = 'localhost';
+      $user = 'root';
+      $pass = '';
+      $db = 'blog';
+      session_start();
+
+      $link = mysqli_connect($host, $user, $pass, $db);
+
+      function generateSalt()
+      {
+        $salt = '';
+        $saltLength = 8;
+
+        for ($i = 0; $i < $saltLength; $i++) {
+          $salt .= chr(mt_rand(33, 126));
+        }
+
+        return $salt;
+      }
+
+      if (!empty($_POST['login']) && !empty($_POST['password']) && !empty($_POST['confirm'])) {
+        if ($_POST['password'] == $_POST['confirm']) {
+          if (mb_strlen($_POST['login']) >= 4 && mb_strlen($_POST['login']) < 10 && mb_strlen($_POST['password']) >= 8 && mb_strlen($_POST['password']) <= 16) {
+
+            $login = $_POST['login'];
+            $salt = generateSalt();
+            $password = password_hash($salt . $_POST['password'], PASSWORD_DEFAULT);
+            $query = "SELECT * FROM user WHERE login='$login'";
+            $result = mysqli_query($link, $query);
+
+            if (mysqli_num_rows($result) == 0) {
+              $query = "INSERT INTO user SET login='$login', password='$password', salt='$salt'";
+              mysqli_query($link, $query) or die(mysqli_error($link));
+              $id = mysqli_insert_id($link);
+              $_SESSION['id'] = $id;
+              header('Location: entrance.php');
+            } else {
+              echo '<p><span style="color: red"> Этот логин уже используется, выберите другой.</span></p>';
+            }
+          } else {
+            echo '<p><span style="color: red"> Логин или пароль несоответствует требованиям.</span></p>';
+          }
+        }
+      }
+      ?>
     </form>
 
   </div>
